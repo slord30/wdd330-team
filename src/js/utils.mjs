@@ -7,6 +7,7 @@ export function qs(selector, parent = document) {
 
 // retrieve data from localstorage
 export function getLocalStorage(key) {
+  // created an empty array when cart is empty
   return JSON.parse(localStorage.getItem(key)) || [];
 }
 // save data to local storage
