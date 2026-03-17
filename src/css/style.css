@@ -262,6 +262,30 @@ button {
   text-align: right;
 }
 
+/* Product discount indicator */
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 8px;
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.final-price {
+  font-width: bold;
+  color: #333;
+}
+
+.discount-flag {
+  color: #cc0000;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+/* .product-card {
+  position: relative;
+} */
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
