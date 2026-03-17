@@ -35,21 +35,7 @@ function productDetailsTemplate(product) {
   productImage.src = product.Image;
   productImage.alt = product.NameWithoutBrand;
 
-  // Discount indicator
-  const priceElement = document.getElementById("productPrice");
-
-  if (product.FinalPrice < product.SuggestedRetailPrice) {
-    // show both prices if discounted
-    priceElement.innerHTML = `
-    <span class = "original-price">$${product.SuggestedRetailPrice.toFixed(2)}</span>
-    <span class = "final-price">$${product.FinalPrice.toFixed(2)}</span>
-    <span class = "discount-flag">Save $${(product.SuggestedRetailPrice - product.FinalPrice).toFixed(2)}!</span>`;
-  } else {
-    // show only final price if no discount
-    priceElement.textContent = `$${product.FinalPrice.toFixed(2)}`;
-  }
-
-  // document.getElementById("productPrice").textContent = product.FinalPrice;
+  document.getElementById("productPrice").textContent = product.FinalPrice;
   document.getElementById("productColor").textContent = product.Colors[0].ColorName;
   document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
 
