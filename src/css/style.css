@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -132,12 +132,27 @@ button {
 }
 
 @keyframes shake {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(15deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(-15deg); }
-  100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(15deg);
+  }
+
+  50% {
+    transform: rotate(0deg);
+  }
+
+  75% {
+    transform: rotate(-15deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
+
 .cart-animate {
   animation: shake 0.5s ease-in-out;
 }
@@ -258,8 +273,9 @@ button {
 }
 
 .cart-total {
-  font-size: 1rem;
-  text-align: right;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* Product discount indicator */
@@ -303,6 +319,11 @@ button {
 
 .cart-card__remove:hover {
   color: #333;
+}
+
+button {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 @media screen and (min-width: 500px) {
