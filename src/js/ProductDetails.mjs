@@ -42,8 +42,20 @@ export default class ProductDetails {
 
     renderProductDetails(selector) {
         const element = document.querySelector(selector);
-
         element.innerHTML = "";
+
+        // Price discount indictor
+        let priceHTML = `<p class="product-price">$${this.product.FinalPrice.toFixed(2)}</p>`;
+
+        if (this.product.FinalPrice < this.product.SuggestedRetailPrice) {
+            const discount = (this.product.SuggestedRetailPrice - this.product.FinalPrice).toFixed(2);
+            priceHTML = `
+            <p class="product-price">
+                <span class="original-price">$${this.product.SuggestedRetailPrice.toFixed(2)}</span>
+                <span class="discounted-price">$${this.product.FinalPrice.toFixed(2)}</span>
+                <span class="discount-flag">Save $${discount}!</span>
+            </p>`;
+        }
 
         element.insertAdjacentHTML(
             "afterBegin",
@@ -51,7 +63,9 @@ export default class ProductDetails {
         <h3>${this.product.Brand.Name}</h3>
         <h2 class="divider">${this.product.NameWithoutBrand}</h2>
         <img class="divider" src="${this.product.Image}" alt="${this.product.Name}" />
-        <p class="product-card__price">$${this.product.FinalPrice}</p>
+
+        ${priceHTML}
+        
         <p class="product__color">${this.product.Colors[0].ColorName}</p>
         <p class="product__description">${this.product.DescriptionHtmlSimple}</p>
         <div class="product-detail__add">
