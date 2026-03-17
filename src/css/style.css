@@ -286,6 +286,25 @@ button {
   position: relative;
 } */
 
+/* remove item from cart */
+.cart-card {
+  position: relative;
+}
+
+.cart-card__remove {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: #ff4747;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.cart-card__remove:hover {
+  color: #333;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
