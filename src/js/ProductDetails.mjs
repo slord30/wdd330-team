@@ -62,7 +62,7 @@ export default class ProductDetails {
             `<section class="product-detail">
         <h3>${this.product.Brand.Name}</h3>
         <h2 class="divider">${this.product.NameWithoutBrand}</h2>
-        <img class="divider" src="${this.product.Image}" alt="${this.product.Name}" />
+        <img class="divider" src="${this.product.Images.PrimaryLarge}" alt="${this.product.Name}" />
 
         ${priceHTML}
         
