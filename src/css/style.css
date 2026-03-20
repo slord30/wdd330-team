@@ -112,6 +112,7 @@ button {
 
 .divider {
   border-bottom: 2px solid var(--primary-color);
+  margin-top: 3rem;
 }
 
 /* End utility classes */
@@ -218,11 +219,16 @@ section.category-grid img {
   flex-flow: row wrap;
   list-style-type: none;
   justify-content: center;
+  margin-bottom: 2rem;
 }
 
 .product-list a {
   text-decoration: none;
   color: var(--dark-grey);
+}
+
+h2.title {
+    margin-bottom: 1rem;
 }
 
 /* Styles for product lists */
