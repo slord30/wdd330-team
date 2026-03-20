@@ -159,6 +159,37 @@ button {
 
 /* End cart icon styles */
 
+/* Home page category grid */
+section.category-grid {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-flow: row;
+    gap: 50px;
+    justify-content: center;
+}
+
+.category-grid img {
+    height: 200px;
+    width: auto;
+}
+
+.category-grid h3 {
+    text-align: center;
+    margin-top: 1rem;
+    color: var(--tertiary-color);
+}
+
+.category-grid a {
+  text-decoration: none;
+}
+
+
+
+section.category-grid img {
+  height: 150px;
+}
+
 .mission {
   position: absolute;
   top: 1rem;
