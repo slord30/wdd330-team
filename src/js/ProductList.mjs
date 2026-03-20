@@ -1,43 +1,31 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { renderListWithTemplate } from "./utils.mjs";
 
-export default class ProductDetails {
+function productCardTemplate(product) {
+  return `<li class="product-card">
+    <a href="../product_pages/index.html?product=${product.Id}">
+      <img src="${product.Image}" alt="Image of ${product.Name}">
+      <h3 class="card__brand">${product.Brand.Name}</h3>
+      <h2 class="card__name">${product.NameWithoutBrand}</h2>
+      <p class="product-card__price">$${product.FinalPrice}</p>
+    </a>
+  </li>`;
+}
 
-  constructor(productId, dataSource) {
-    this.productId = productId;
-    this.product = {};
+export default class ProductList {
+  constructor(category, dataSource, listElement) {
+    this.category = category;
     this.dataSource = dataSource;
+    this.listElement = listElement;
   }
 
   async init() {
-    this.product = await this.dataSource.findProductById(this.productId);
-    this.renderProductDetails();
-    document
-      .getElementById("addToCart")
-      .addEventListener("click", this.addProductToCart.bind(this));
+    const list = await this.dataSource.getData(this.category);
+    
+    this.renderList(list);
   }
 
-  addProductToCart() {
-    const cartItems = getLocalStorage("so-cart") || [];
-    cartItems.push(this.product);
-    setLocalStorage("so-cart", cartItems);
+  renderList(list) {
+    const htmlStrings = list.map(productCardTemplate);
+    this.listElement.innerHTML = htmlStrings.join("");
   }
-
-  renderProductDetails() {
-    productDetailsTemplate(this.product);
-  }
-}
-
-function productDetailsTemplate(product) {
-  document.querySelector("h2").textContent = product.Brand.Name;
-  document.querySelector("h3").textContent = product.NameWithoutBrand;
-
-  const productImage = document.getElementById("productImage");
-  productImage.src = product.Image;
-  productImage.alt = product.NameWithoutBrand;
-
-  document.getElementById("productPrice").textContent = product.FinalPrice;
-  document.getElementById("productColor").textContent = product.Colors[0].ColorName;
-  document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
-
-  document.getElementById("addToCart").dataset.id = product.Id;
 }
