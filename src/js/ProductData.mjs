@@ -12,10 +12,23 @@ export default class ProductData {
   constructor() {
   }
 
-  async getData(category) {
-    const response = await fetch(`${baseURL}products/search/${category}`);
+  async getData(category, query = "") {
+    const targetCategory = category || "tents";
+    let url = `${baseURL}products/search/${targetCategory}`;
+
+    const response = await fetch(url);
     const data = await convertToJson(response);
-    return data.Result;
+    let list = data.Result;
+
+    if (query) {
+      const term = query.toLowerCase();
+      list = list.filter(product =>
+        product.Name.toLowerCase().includes(term) ||
+        product.Brand.Name.toLowerCase().includes(term)
+      );
+    }
+
+    return list;
   }
 
   async findProductById(id) {

@@ -12,16 +12,24 @@ function productCardTemplate(product) {
 }
 
 export default class ProductList {
-  constructor(category, dataSource, listElement) {
+  constructor(category, dataSource, listElement, searchQuery = "") {
     this.category = category;
     this.dataSource = dataSource;
     this.listElement = listElement;
+    this.searchQuery = searchQuery;
   }
 
   async init() {
-    const list = await this.dataSource.getData(this.category);
-    const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
-    document.querySelector(".title").innerHTML = `Top Products: ${categoryName}`;
+    const list = await this.dataSource.getData(this.category, this.searchQuery);
+
+    const titleElement = document.querySelector(".title");
+
+    if (this.searchQuery) {
+      titleElement.innerHTML = `Search results for: ${this.searchQuery}`;
+    } else if (this.category) {
+      const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
+      titleElement.innerHTML = `Top Products: ${categoryName}`;
+    }
     
     this.renderList(list);
   }
