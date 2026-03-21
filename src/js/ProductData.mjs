@@ -13,24 +13,31 @@ export default class ProductData {
   }
 
   async getData(category, query = "") {
-    const targetCategory = category || "tents";
-    let url = `${baseURL}products/search/${targetCategory}`;
+  const targetCategory = category || "tents"; 
+  const url = `${baseURL}products/search/${targetCategory}`;
 
-    const response = await fetch(url);
-    const data = await convertToJson(response);
-    let list = data.Result;
+  const response = await fetch(url);
+  const data = await convertToJson(response);
+  let list = data.Result;
 
-    if (query) {
-      const term = query.toLowerCase();
-      list = list.filter(product =>
-        product.Name.toLowerCase().includes(term) ||
-        product.Brand.Name.toLowerCase().includes(term)
-      );
-    }
+  if (query) {
+    const term = query.toLowerCase().replace(/[^a-z0-9]/g, "");
+    
+    const singularTerm = term.endsWith("s") && term.length > 3 ? term.slice(0, -1) : term;
 
-    return list;
+    list = list.filter(product => {
+      const name = product.Name.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const brand = product.Brand.Name.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+      return name.includes(term) || 
+             name.includes(singularTerm) || 
+             brand.includes(term) || 
+             brand.includes(singularTerm);
+    });
   }
 
+  return list;
+}
   async findProductById(id) {
     const response = await fetch(`${baseURL}product/${id}`);
     const data = await convertToJson(response);
