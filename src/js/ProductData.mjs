@@ -13,31 +13,47 @@ export default class ProductData {
   }
 
   async getData(category, query = "") {
-  const targetCategory = category || "tents"; 
-  const url = `${baseURL}products/search/${targetCategory}`;
-
-  const response = await fetch(url);
-  const data = await convertToJson(response);
-  let list = data.Result;
-
-  if (query) {
-    const term = query.toLowerCase().replace(/[^a-z0-9]/g, "");
     
-    const singularTerm = term.endsWith("s") && term.length > 3 ? term.slice(0, -1) : term;
+    const categoryMap = {
+      "tent": "tents",
+      "tents": "tents",
+      "backpack": "backpacks",
+      "backpacks": "backpacks",
+      "pack" : "backpacks",
+      "hammock": "hammocks",
+      "hammocks": "hammocks",
+      "sleeping bag": "sleeping-bags",
+      "sleeping bags": "sleeping-bags",
+      "sleeping-bag": "sleeping-bags",
+      "sleeping-bags": "sleeping-bags",
+      "sleeping": "sleeping-bags",
+      "bag": "sleeping-bags"
+    };
 
-    list = list.filter(product => {
-      const name = product.Name.toLowerCase().replace(/[^a-z0-9]/g, "");
-      const brand = product.Brand.Name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    let searchTerm = query.toLowerCase().trim();
 
-      return name.includes(term) || 
-             name.includes(singularTerm) || 
-             brand.includes(term) || 
-             brand.includes(singularTerm);
-    });
+    let targetCategory = categoryMap[searchTerm] || category || "tents";
+
+    const url = `${baseURL}products/search/${targetCategory}`;
+    const response = await fetch(url);
+    const data = await convertToJson(response);
+    let list = data.Result;
+
+    if (query && !categoryMap[searchTerm]) {
+      const term = searchTerm.replace(/[^a-z0-9]/g, "");
+      const singularTerm = term.endsWith("s") ? term.slice(0, -1) : term;
+
+      list = list.filter(product => {
+        const name = product.Name.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const brand = product.Brand.Name.toLowerCase().replace(/[^a-z0-9]/g, "");
+        return name.includes(term) || name.includes(singularTerm) ||
+          brand.includes(term) || brand.includes(singularTerm);
+      });
+    }
+
+    return list;
   }
 
-  return list;
-}
   async findProductById(id) {
     const response = await fetch(`${baseURL}product/${id}`);
     const data = await convertToJson(response);
