@@ -1,3 +1,4 @@
+import ExternalServices from "./ExternalServices.mjs";
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 export default class CheckoutProcess {
@@ -48,12 +49,54 @@ export default class CheckoutProcess {
     }
 
     displayOrderTotal() {
-        const shippingElement = document.querySelector("#shipping");
-        const taxElement = document.querySelector("#tax");
-        const totalElement = document.querySelector("#total");
+        const shipping = document.querySelector("#shipping");
+        const tax = document.querySelector("#tax");
+        const total = document.querySelector("#total");
 
-        if (shippingElement) shippingElement.innerText = `$${this.shipping.toFixed(2)}`;
-        if (taxElement) taxElement.innerText = `$${this.tax}`;
-        if (totalElement) totalElement.innerText = `$${this.total}`;
+        if (shipping) shipping.innerText = `$${this.shipping.toFixed(2)}`;
+        if (tax) tax.innerText = `$${this.tax}`;
+        if (total) total.innerText = `$${this.total}`;
     }
+
+    async checkout(form) {
+        const order = formDataToJSON(form);
+
+        order.orderDate = new Date().toISOString();
+        order.orderTotal = this.total;
+        order.tax = this.tax;
+        order.shipping = this.shipping;
+        order.items = packageItems(this.list);
+
+        console.log(order);
+
+        try {
+            const services = new ExternalServices();
+            const res = await services.checkout(json);
+            console.log(res);
+
+            setLocalStorage(this.key, []);
+
+            location.assign("success.html");
+        }   catch (err) {
+            console.log(err);
+        }
+    }
+}
+
+function formDataToJSON(formElement) {
+    const formData =  new FormData(formElement);
+    const convertedJSON = {};
+    formData.forEach(function (value, key) {
+        convertedJSON[key] = value;
+    });
+    return convertedJSON;
+}
+
+function packageItems(items) {
+    return items.map((item) => ({
+        id: item.Id,
+        price: item.FinalPrice,
+        name: item.Name,
+        quantity: 1,
+    }));
 }

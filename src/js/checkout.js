@@ -3,24 +3,20 @@ import CheckoutProcess from "./CheckoutProcess.mjs";
 
 loadHeaderFooter();
 
-const myCheckout = new CheckoutProcess("so-cart", "#order-summary"); //where the checkout info will be displayed (displaySelector parameter in CheckoutProcess.mjs)
-myCheckout.init();
 
-document.querySelector("#zip").addEventListener("blur", () => {
-    myCheckout.calculateOrderTotal();
-});
+const checkoutForm = document.querySelector("#checkout-form");
 
-document.querySelector("#checkout-form").addEventListener("submit", (e) => {
-    e.preventDefault(); //prevents page from refreshing
+if (checkoutForm) {
+    const myCheckout = new CheckoutProcess("so-cart", "#order-summary"); //where the checkout info will be displayed (displaySelector parameter in CheckoutProcess.mjs)
+    myCheckout.init();
 
-    const formData = new FormData(e.target); //get all user's info
-    const data = Object.fromEntries(formData.entries());
+    document.querySelector("#zip").addEventListener("blur", () => {
+        myCheckout.calculateOrderTotal();
+    });
 
-    data.orderDate = new Date();
-    data.total = myCheckout.total;
-    data.tax = myCheckout.tax;
-    data.shipping = myCheckout.shipping;
-    data.items = myCheckout.list;
+    document.querySelector("#checkout-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        myCheckout.checkout(e.target);
+    });
+}
 
-    console.log("Order data send:", data);
-});

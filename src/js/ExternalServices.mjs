@@ -1,19 +1,23 @@
-const baseURL = import.meta.env.VITE_SERVER_URL;
+const baseURL = "https://wdd330-backend.onrender.com/";
 
-function convertToJson(res) {
+async function convertToJson(res) {
+  const jsonResponse = await res.json();
   if (res.ok) {
-    return res.json();
+    return jsonResponse;
   } else {
-    throw new Error("Bad Response");
+    throw {name: "servicesError", message: jsonResponse};
   }
 }
 
-export default class ProductData {
+export default class ExternalServices {
   constructor() {
   }
 
   async getData(category, query = "") {
     
+    const safeCategory = category || "";
+    const safeQuery = query || "";
+
     const categoryMap = {
       "tent": "tents",
       "tents": "tents",
@@ -30,9 +34,10 @@ export default class ProductData {
       "bag": "sleeping-bags"
     };
 
-    let searchTerm = query.toLowerCase().trim();
+    let searchTerm = safeQuery.toLowerCase().trim();
+    let categoryTerm = safeCategory.toLowerCase().trim();
 
-    let targetCategory = categoryMap[searchTerm] || category || "tents";
+    let targetCategory = categoryMap[searchTerm] || categoryMap[categoryTerm] || safeCategory || "tents";
 
     const url = `${baseURL}products/search/${targetCategory}`;
     const response = await fetch(url);
@@ -58,5 +63,16 @@ export default class ProductData {
     const response = await fetch(`${baseURL}product/${id}`);
     const data = await convertToJson(response);
     return data.Result;
+  }
+
+  async checkout(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    return await fetch(`${baseURL}checkout`, options).then(convertToJson);
   }
 }
