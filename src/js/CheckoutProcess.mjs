@@ -59,26 +59,26 @@ export default class CheckoutProcess {
     }
 
     async checkout(form) {
-        const order = formDataToJSON(form);
+        const json = formDataToJSON(form);
 
-        order.orderDate = new Date().toISOString();
-        order.orderTotal = this.total;
-        order.tax = this.tax;
-        order.shipping = this.shipping;
-        order.items = packageItems(this.list);
+        json.orderDate = new Date().toISOString();
+        json.orderTotal = this.total;
+        json.tax = this.tax;
+        json.shipping = this.shipping;
+        json.items = packageItems(this.list);
 
-        console.log(order);
+        console.log("Payload being sent to server:", json);
 
         try {
             const services = new ExternalServices();
             const res = await services.checkout(json);
-            console.log(res);
+            console.log("Server Response:", res);
 
             setLocalStorage(this.key, []);
 
             location.assign("success.html");
         }   catch (err) {
-            console.log(err);
+            console.log("Checkout Error;", err);
         }
     }
 }
