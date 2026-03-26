@@ -16,7 +16,15 @@ if (checkoutForm) {
 
     document.querySelector("#checkout-form").addEventListener("submit", (e) => {
         e.preventDefault();
-        myCheckout.checkout(e.target);
+        
+        const myForm = e.target;
+        const chk_status = myForm.checkValidity();
+
+        myForm.reportValidity();
+
+        if(chk_status) {
+            myCheckout.checkout(myForm);
+        }
     });
 }
 

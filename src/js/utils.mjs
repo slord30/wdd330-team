@@ -62,3 +62,25 @@ export async function loadHeaderFooter() {
   renderWithTemplate(footerTemplate, footerElement);
 
 }
+
+export function alertMessage(message, scroll = true) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert");
+
+  //create the message and close button (X)
+  alert.innerHTML = `<p>${message}</p><span>X</span>`;
+
+  //remove the alert when "X" is clicked
+  alert.addEventListener("click", function (e) {
+    if (e.target.tagName === "SPAN") {
+      const main = document.querySelector("main");
+      main.removeChild(this);
+    }
+  });
+
+  const main = document.querySelector("main");
+  main.prepend(alert);
+
+  //scroll to the top so the user will see the error
+  if (scroll) window.scrollTo(0, 0);
+}

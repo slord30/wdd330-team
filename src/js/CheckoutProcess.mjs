@@ -1,5 +1,6 @@
 import ExternalServices from "./ExternalServices.mjs";
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { alertMessage } from "./utils.mjs";
 
 export default class CheckoutProcess {
     //constructor gets localStorage key and the CSS selector for where to diplay checkout info
@@ -78,7 +79,17 @@ export default class CheckoutProcess {
 
             location.assign("success.html");
         }   catch (err) {
-            console.log("Checkout Error;", err);
+            const existingAlerts = document.querySelectorAll(".alert");
+            existingAlerts.forEach((alert) => alert.remove());
+
+            if (err.name === "servicesError") {
+                for (let key in err.message) {
+                    alertMessage(err.message[key]);
+                }
+            }   else {
+                alertMessage("Something went wrong. Please try again.")
+                console.log(err);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, alertMessage } from "./utils.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -21,6 +21,8 @@ export default class ProductDetails {
         let cart = getLocalStorage("so-cart") || [];
         cart.push(this.product);
         setLocalStorage("so-cart", cart);
+
+        alertMessage(`${this.product.NameWithoutBrand} added to cart!`)
 
         // shakes backpack icon when item is added to cart
         const cartIcon = document.querySelector(".cart");

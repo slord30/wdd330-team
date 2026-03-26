@@ -6,8 +6,12 @@ import { loadHeaderFooter } from "./utils.mjs";
 
 loadHeaderFooter();
 
-const dataSource = new ExternalServices("tents");
 const listElement = document.querySelector(".product-list");
-const myList = new ProductList("tents", dataSource, listElement);
 
-myList.init();
+if (listElement) {
+    const dataSource = new ExternalServices("tents");
+    const myList = new ProductList("tents", dataSource, listElement);
+
+    myList.init();
+}
+
