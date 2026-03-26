@@ -31,11 +31,7 @@ export default class ProductDetails {
         // Remove the class after the animation ends so it can run again later
         setTimeout(() => cartIcon.classList.remove("cart-animate"), 500);
 
-  const message = document.createElement("p");
-  message.textContent = "Added to cart!";
-  message.style.color = "green";
-  
-  // Put the message inside the product detail section
+   // Put the message inside the product detail section
   document.querySelector(".product-detail").appendChild(message);
 
   // Make it disappear after 2 seconds
